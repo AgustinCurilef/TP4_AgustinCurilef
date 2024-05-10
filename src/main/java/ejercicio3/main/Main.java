@@ -1,9 +1,7 @@
 package ejercicio3.main;
 
 import ejercicio3.database.PersistenciaSistemaRadioJDBC;
-import ejercicio3.model.ConcursoManager;
 import ejercicio3.model.DefaulSistemaRadioCompetition;
-import ejercicio3.model.InscripcionParticipante;
 import ejercicio3.model.SistemaRadioCompetition;
 import ejercicio3.ui.VentanaInscripcionRadioCompetition;
 
@@ -16,9 +14,7 @@ public class Main {
             @Override
             public void run() {
                 try {
-                    InscripcionParticipante inscripcionParticipante = new PersistenciaSistemaRadioJDBC();
-                    ConcursoManager concursoManager = new PersistenciaSistemaRadioJDBC();
-                    SistemaRadioCompetition sistema = new DefaulSistemaRadioCompetition(inscripcionParticipante, concursoManager);
+                    SistemaRadioCompetition sistema = new DefaulSistemaRadioCompetition(new PersistenciaSistemaRadioJDBC(), new PersistenciaSistemaRadioJDBC());
                     new VentanaInscripcionRadioCompetition(sistema);
                     //Main.cargarConcursos(sistema); para cargar los concursos una unica vez
 

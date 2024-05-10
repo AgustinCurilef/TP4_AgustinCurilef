@@ -1,7 +1,7 @@
 package ejercicio3.model;
 
-import javax.swing.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaulSistemaRadioCompetition implements SistemaRadioCompetition {
@@ -56,13 +56,15 @@ public class DefaulSistemaRadioCompetition implements SistemaRadioCompetition {
     }
 
     @Override
-    public void listarConcurso(JComboBox<String> comboBox) {
+    public List<Concurso> listarConcurso() {
         List<Concurso> todosConcursos = concursoManager.todosLosConcursos();
+        List<Concurso> concursosActuales = new ArrayList<>();
         for (Concurso concurso : todosConcursos) {
             if (concurso.verificarFechasConcurso(LocalDate.now())) {
-                comboBox.addItem(concurso.obtenerNombre());
+                concursosActuales.add(concurso);
             }
         }
+        return concursosActuales;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class DefaulSistemaRadioCompetition implements SistemaRadioCompetition {
 
     }
 
-    public int obtenerIDPorNombre(Object nombre) {
+    public int obtenerIDPorNombre(String nombre) {
         List<Concurso> todosConcursos = concursoManager.todosLosConcursos();
         for (Concurso concurso : todosConcursos) {
             if (concurso.obtenerNombre().equals(nombre)) {

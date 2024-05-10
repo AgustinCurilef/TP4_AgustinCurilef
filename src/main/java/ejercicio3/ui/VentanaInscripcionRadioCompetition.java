@@ -1,5 +1,6 @@
 package ejercicio3.ui;
 
+import ejercicio3.model.Concurso;
 import ejercicio3.model.SistemaRadioCompetition;
 
 import javax.swing.*;
@@ -8,10 +9,14 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VentanaInscripcionRadioCompetition {
     private final JPanel contentPane;
     private final SistemaRadioCompetition sistemaRadioCompetition;
+    private final List<Concurso> concursosActivos = new ArrayList<>();
     private JComboBox<String> comboBoxConcursos;
     private JLabel lblName;
     private JTextField txtName;
@@ -41,7 +46,8 @@ public class VentanaInscripcionRadioCompetition {
 
     private void formElements() {
         comboBoxConcursos = new JComboBox<String>();
-        sistemaRadioCompetition.listarConcurso(comboBoxConcursos);
+        List<Concurso> concursosActivos = sistemaRadioCompetition.listarConcurso();
+        cargarComboBox(concursosActivos);
         lblName = new JLabel("Nombre:");
         txtName = new JTextField();
         txtName.setColumns(10);
@@ -64,7 +70,7 @@ public class VentanaInscripcionRadioCompetition {
             public void actionPerformed(ActionEvent e) {
                 btnOk.setEnabled(false);
                 try {
-                    String concursoName = comboBoxConcursos.getSelectedItem().toString();
+                    var concursoName = comboBoxConcursos.getSelectedItem().toString();
                     sistemaRadioCompetition.inscribirParticipante(txtName.getText(), txtLastName.getText(), txtId.getText(), txtEmail.getText(), txtPhone.getText(), sistemaRadioCompetition.obtenerIDPorNombre(concursoName));
                     JOptionPane.showMessageDialog(null, "Se ha registrado con exito!!");
                     txtName.setText("");
@@ -80,6 +86,14 @@ public class VentanaInscripcionRadioCompetition {
             }
         });
 
+    }
+
+    private void cargarComboBox(List<Concurso> concursosActivo) {
+        for (Concurso concurso : concursosActivo) {
+            if (concurso.verificarFechasConcurso(LocalDate.now())) {
+                comboBoxConcursos.addItem(concurso.obtenerNombre());
+            }
+        }
     }
 
 
